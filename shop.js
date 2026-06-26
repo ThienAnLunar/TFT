@@ -1,7 +1,4 @@
-import { championsPool, gameState, updateGoldUI } from './data.js';
-import { renderBench } from './board.js';
-
-export function generateShop() {
+function generateShop() {
     const shop = document.getElementById("shop");
     shop.innerHTML = "";
     
@@ -18,14 +15,12 @@ export function generateShop() {
 
 function buyChampion(champion, shopItemElement) {
     if (gameState.gold >= champion.cost) {
-        // Tìm ô trống trên bench
         const emptyIndex = gameState.benchSlots.findIndex(slot => slot === null);
         
         if (emptyIndex !== -1) {
             gameState.gold -= champion.cost;
-            // Dùng cấu trúc {...} để clone object tránh lỗi ghi đè dữ liệu gốc
             gameState.benchSlots[emptyIndex] = { ...champion, star: 1 }; 
-            shopItemElement.style.visibility = "hidden"; // Mua rồi thì ẩn đi
+            shopItemElement.style.visibility = "hidden"; 
             
             updateGoldUI();
             renderBench();
