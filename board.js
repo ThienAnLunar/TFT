@@ -1,10 +1,8 @@
-import { gameState } from './data.js';
-
 let draggedElement = null;
-let sourceSlotType = null; // 'bench' hoặc 'board'
+let sourceSlotType = null;
 let sourceIndex = null;
 
-export function renderBoard() {
+function renderBoard() {
     const field = document.getElementById("battlefield");
     field.innerHTML = "";
     for (let i = 0; i < 28; i++) {
@@ -22,7 +20,7 @@ export function renderBoard() {
     }
 }
 
-export function renderBench() {
+function renderBench() {
     const bench = document.getElementById("bench");
     bench.innerHTML = "";
     for (let i = 0; i < 9; i++) {
@@ -70,20 +68,15 @@ function setupDragEvents(cell) {
         const targetType = cell.dataset.type;
         const targetIndex = parseInt(cell.dataset.index);
 
-        // Lấy dữ liệu tướng đang kéo
         const movingChamp = sourceSlotType === 'bench' ? gameState.benchSlots[sourceIndex] : gameState.boardSlots[sourceIndex];
-        
-        // Đích đến (ô được thả vào)
         const targetChamp = targetType === 'bench' ? gameState.benchSlots[targetIndex] : gameState.boardSlots[targetIndex];
 
-        // Đổi chỗ (Swap logic)
         if (sourceSlotType === 'bench') gameState.benchSlots[sourceIndex] = targetChamp;
         else gameState.boardSlots[sourceIndex] = targetChamp;
 
         if (targetType === 'bench') gameState.benchSlots[targetIndex] = movingChamp;
         else gameState.boardSlots[targetIndex] = movingChamp;
 
-        // Vẽ lại giao diện
         renderBoard();
         renderBench();
     });
