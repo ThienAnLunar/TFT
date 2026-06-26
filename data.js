@@ -18,7 +18,7 @@ const traitsConfig = {
 };
 
 const championsPool = [
-    { id: "garen", name: "Garen", cost: 1, hp: 600, damage: 50, traits: ["Đấu Sĩ", "Thiên Thần"] },
+    { id: "garen", name: "Garen", cost: 2, hp: 600, damage: 50, traits: ["Đấu Sĩ", "Thiên Thần"] },
     { id: "vayne", name: "Vayne", cost: 1, hp: 400, damage: 60, traits: ["Xạ Thủ", "Mã Hóa"] },
     { id: "lucian", name: "Lucian", cost: 2, hp: 450, damage: 55, traits: ["Xạ Thủ", "Thiên Thần"] },
     { id: "ahri", name: "Ahri", cost: 2, hp: 450, damage: 65, traits: ["Mã Hóa", "Ma"] },

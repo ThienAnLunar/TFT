@@ -125,6 +125,7 @@ function checkSynergies() {
     }
 
     gameState.activeTraits = finalActiveTraits;
+    applyTraitBuffs()
     renderTraitsUI();
 }
 
