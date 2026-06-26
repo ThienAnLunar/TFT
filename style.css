@@ -1,0 +1,129 @@
+body {
+    background-color: #0f111a;
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    user-select: none;
+}
+
+#game-container {
+    text-align: center;
+    background: #1a1c28;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+/* Bàn cờ 4x7 */
+#battlefield {
+    display: grid;
+    grid-template-columns: repeat(7, 65px);
+    grid-gap: 6px;
+    margin: 20px auto;
+    justify-content: center;
+}
+
+/* Hàng chờ 1x9 */
+#bench {
+    display: grid;
+    grid-template-columns: repeat(9, 65px);
+    grid-gap: 6px;
+    margin: 20px auto;
+    justify-content: center;
+}
+
+/* Ô cờ chung */
+.cell {
+    width: 65px;
+    height: 65px;
+    background-color: #222533;
+    border: 2px solid #3b3e54;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.cell.over {
+    border-color: #ffce00;
+    background-color: #2d324d;
+}
+
+/* Element Tướng */
+.champion-piece {
+    width: 55px;
+    height: 55px;
+    background: #3e4465;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: grab;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+.champion-piece:active {
+    cursor: grabbing;
+}
+
+.champion-piece.dragging {
+    opacity: 0.5;
+}
+
+/* Khu vực điều khiển & Shop */
+#control-panel {
+    margin-top: 25px;
+    background: #141622;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+#shop {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.shop-item {
+    width: 110px;
+    height: 70px;
+    background: #2e3d52;
+    border: 2px solid #475e7a;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    transition: transform 0.1s;
+}
+
+.shop-item:hover {
+    transform: scale(1.05);
+    border-color: #00adb5;
+}
+
+#reroll-btn {
+    padding: 10px 20px;
+    background-color: #ff5722;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#reroll-btn:hover {
+    background-color: #ff7043;
+}
