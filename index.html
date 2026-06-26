@@ -7,39 +7,39 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <div id="game-container">
-        <div id="status-bar" style="display: flex; justify-content: space-around; background: #141622; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-weight: bold;">
-            <div>⚔️ Vòng: <span id="round">1</span></div>
-            <div>💰 Vàng: <span id="gold">50</span></div>
-            <div>📦 Điểm Hũ: <span id="cashout-points" style="color: #ff9800;">0</span></div>
+        
+        <div id="left-panel">
+            <div id="player-stats-box">
+                <h4 style="margin: 0 0 8px 0; color: #00adb5;">👤 NGƯỜI CHƠI</h4>
+                <div style="font-size: 13px; display: flex; flex-direction: column; gap: 5px;">
+                    <div>❤️ Máu: <span id="player-hp" style="color:#ff4a4a; font-weight:bold;">100</span></div>
+                    <div>💰 Vàng: <span id="gold" style="color:#ffd700; font-weight:bold;">50</span></div>
+                    <div>⚔️ Vòng đấu: <span id="round">1-1</span></div>
+                </div>
+            </div>
+            
+            <div id="traits-panel"></div>
         </div>
 
-        <h1>Mini TFT Clone</h1>
-        
-        <div style="display: flex; justify-content: center; gap: 20px;">
-            <div id="traits-panel"></div>
+        <div id="right-panel">
+            <div id="lucky-chest">📦 Điểm Hũ: <span id="cashout-points">0</span></div>
 
-            <div style="display: flex; flex-direction: column; gap: 15px;">
-                <div id="battlefield"></div>
-                
-                <div id="champ-info-panel" style="background: #141622; padding: 10px; border-radius: 8px; border: 1px solid #3b3e54; min-height: 50px; text-align: center; color: #aaa; font-size: 13px;">
-                    💡 Click vào một tướng để xem chỉ số. Nhấp đúp (Double click) để di chuyển lên/xuống sàn!
+            <div id="battlefield"></div>
+
+            <div id="bench"></div>
+
+            <div id="control-panel" style="text-align: center;">
+                <div id="shop"></div>
+                <div style="margin-top: 10px; display: flex; gap: 10px; justify-content: center;">
+                    <button id="reroll-btn" style="padding: 8px 15px; background: #ff5722; border:none; color:#fff; font-weight:bold; border-radius:4px; cursor:pointer;">Đổi lại (2G)</button>
+                    <button id="win-btn" style="padding: 8px 15px; background: #4caf50; border:none; color:#fff; font-weight:bold; border-radius:4px; cursor:pointer;">Giả lập THẮNG</button>
+                    <button id="lose-btn" style="padding: 8px 15px; background: #f44336; border:none; color:#fff; font-weight:bold; border-radius:4px; cursor:pointer;">Giả lập THUA</button>
+                    <button id="cashout-btn" style="padding: 8px 15px; background: #ff9800; border:none; color:#fff; font-weight:bold; border-radius:4px; cursor:pointer;">💥 NỔ HŨ</button>
                 </div>
             </div>
         </div>
 
-        <div id="bench"></div>
-
-        <div id="control-panel">
-            <div id="shop"></div>
-            <div style="display: flex; justify-content: center; gap: 10px; margin-top: 15px;">
-                <button id="reroll-btn">Đổi lại (2 Vàng)</button>
-                <button id="win-btn" style="padding: 10px 20px; background-color: #4caf50; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">Giả lập THẮNG TRẬN</button>
-                <button id="lose-btn" style="padding: 10px 20px; background-color: #f44336; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">Giả lập THUA TRẬN</button>
-                <button id="cashout-btn" style="padding: 10px 20px; background-color: #ff9800; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">💥 NỔ HŨ 💥</button>
-            </div>
-        </div>
     </div>
 
     <script src="data.js"></script>

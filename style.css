@@ -11,42 +11,93 @@ body {
 }
 
 #game-container {
-    text-align: center;
+    display: flex;
+    gap: 20px;
     background: #1a1c28;
-    padding: 25px;
+    padding: 20px;
     border-radius: 12px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    max-width: 1000px;
 }
 
-/* Bàn cờ 4x7 */
+/* Cánh trái: Chỉ số & Tộc hệ */
+#left-panel {
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#player-stats-box {
+    background: #141622;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #3b3e54;
+}
+
+#traits-panel {
+    background: #141622;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #3b3e54;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+#traits-panel h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #ff5722;
+    border-bottom: 1px solid #3b3e54;
+    padding-bottom: 5px;
+}
+
+/* Cánh phải: Sàn đấu & Shop */
+#right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+/* Hũ Thần Tài hiện trên bàn cờ */
+#lucky-chest {
+    background: linear-gradient(135deg, #ff9800, #ff5722);
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    display: none; /* Mặc định ẩn, kích hoạt hệ mới hiện */
+    box-shadow: 0 0 10px rgba(255,152,0,0.5);
+}
+
+/* Bàn cờ 8 hàng x 7 cột */
 #battlefield {
     display: grid;
-    grid-template-columns: repeat(7, 65px);
-    grid-gap: 6px;
-    margin: 20px auto;
-    justify-content: center;
-}
-
-/* Hàng chờ 1x9 */
-#bench {
-    display: grid;
-    grid-template-columns: repeat(9, 65px);
-    grid-gap: 6px;
-    margin: 20px auto;
-    justify-content: center;
-}
-
-/* Ô cờ chung */
-.cell {
-    width: 65px;
-    height: 65px;
-    background-color: #222533;
-    border: 2px solid #3b3e54;
+    grid-template-rows: repeat(8, 55px);
+    grid-template-columns: repeat(7, 55px);
+    grid-gap: 4px;
+    background: #10121b;
+    padding: 10px;
     border-radius: 8px;
+    border: 2px solid #2d3041;
+}
+
+/* Các ô cờ */
+.cell {
+    width: 55px;
+    height: 55px;
+    background-color: #222533;
+    border: 1px solid #3b3e54;
+    border-radius: 6px;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all 0.2s;
+}
+
+/* 4 hàng trên của đối thủ */
+.cell.enemy-zone {
+    background-color: #2a1b1b;
+    border-color: #522d2d;
 }
 
 .cell.over {
@@ -54,96 +105,44 @@ body {
     background-color: #2d324d;
 }
 
-/* Element Tướng */
+/* Hàng chờ */
+#bench {
+    display: grid;
+    grid-template-columns: repeat(9, 55px);
+    grid-gap: 6px;
+}
+
 .champion-piece {
-    width: 55px;
-    height: 55px;
+    width: 48px;
+    height: 48px;
     background: #3e4465;
-    border-radius: 6px;
+    border-radius: 4px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: bold;
     cursor: grab;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
 }
 
-.champion-piece:active {
-    cursor: grabbing;
-}
-
-.champion-piece.dragging {
-    opacity: 0.5;
-}
-
-/* Khu vực điều khiển & Shop */
-#control-panel {
-    margin-top: 25px;
-    background: #141622;
-    padding: 15px;
-    border-radius: 8px;
-}
+.champion-piece.dragging { opacity: 0.3; }
 
 #shop {
     display: flex;
-    gap: 12px;
-    justify-content: center;
-    margin: 15px 0;
+    gap: 10px;
 }
 
 .shop-item {
-    width: 110px;
-    height: 70px;
+    width: 100px;
+    height: 60px;
     background: #2e3d52;
-    border: 2px solid #475e7a;
-    border-radius: 6px;
+    border-radius: 4px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    font-size: 13px;
+    font-size: 11px;
     font-weight: bold;
-    transition: transform 0.1s;
-}
-
-.shop-item:hover {
-    transform: scale(1.05);
-    border-color: #00adb5;
-}
-
-#reroll-btn {
-    padding: 10px 20px;
-    background-color: #ff5722;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-#reroll-btn:hover {
-    background-color: #ff7043;
-}
-
-#traits-panel {
-    width: 200px;
-    max-height: 400px;
-    overflow-y: auto; /* Tự động xuất hiện thanh cuộn nếu danh sách quá dài */
-    background: #141622;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #3b3e54;
-    text-align: left;
-}
-
-/* Tùy chỉnh thanh cuộn cho đẹp */
-#traits-panel::-webkit-scrollbar {
-    width: 4px;
-}
-#traits-panel::-webkit-scrollbar-thumb {
-    background: #3b3e54;
-    border-radius: 4px;
 }

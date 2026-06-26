@@ -50,3 +50,12 @@ function updateGoldUI() {
     document.getElementById("round").innerText = gameState.round;
     document.getElementById("cashout-points").innerText = gameState.cashoutPoints;
 }
+
+const gameState = {
+    gold: 50,
+    round: 1,
+    cashoutPoints: 0,
+    benchSlots: Array(9).fill(null),
+    boardSlots: Array(56).fill(null), // ĐỔI THÀNH 56 Ô CHO 8 HÀNG
+    activeTraits: {} 
+};
