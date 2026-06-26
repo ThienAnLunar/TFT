@@ -41,7 +41,20 @@ function renderBench() {
 function createChampPiece(champData, type, index) {
     const piece = document.createElement("div");
     piece.classList.add("champion-piece");
-    piece.innerText = champData.name;
+    
+    // Hiển thị số sao: 1 sao thì không hiện, 2 sao hiện ⭐⭐, 3 sao hiện ⭐⭐⭐ rực rỡ
+    const starIcons = champData.star > 1 ? "⭐".repeat(champData.star) + "<br>" : "";
+    piece.innerHTML = `${starIcons}${champData.name}`;
+    
+    // Nếu là tướng 3 sao, đổi màu nền sang vàng kim cho rực rỡ quyền lực
+    if (champData.star === 3) {
+        piece.style.background = "linear-gradient(135deg, #ffae00, #ff7b00)";
+        piece.style.color = "#fff";
+        piece.style.border = "2px solid #fff";
+    } else if (champData.star === 2) {
+        piece.style.background = "linear-gradient(135deg, #4a5568, #2d3748)";
+    }
+
     piece.draggable = true;
 
     piece.addEventListener("dragstart", (e) => {
@@ -125,7 +138,7 @@ function checkSynergies() {
     }
 
     gameState.activeTraits = finalActiveTraits;
-    applyTraitBuffs()
+    applyTraitBuffs();
     renderTraitsUI();
 }
 
