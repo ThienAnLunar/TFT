@@ -1,8 +1,6 @@
-// Hàm xử lý kết thúc trận đấu (Giả lập Thắng/Thua)
 function handleCombatEnd(isWin) {
     let gainedPoints = 0;
 
-    // 1. Kiểm tra cơ chế tích điểm của "Mã Hóa" (Mỗi trận đều tăng)
     if (gameState.activeTraits["Mã Hóa"]) {
         const milestone = gameState.activeTraits["Mã Hóa"].milestone;
         if (milestone === 2) gainedPoints += 5;
@@ -10,7 +8,6 @@ function handleCombatEnd(isWin) {
         if (milestone === 6) gainedPoints += 20;
     }
 
-    // 2. Kiểm tra cơ chế tích điểm của "Chinh Phục" (Chỉ tăng khi THẮNG TRẬN)
     if (isWin && gameState.activeTraits["Chinh Phục"]) {
         const milestone = gameState.activeTraits["Chinh Phục"].milestone;
         if (milestone === 2) gainedPoints += 4;
@@ -18,22 +15,18 @@ function handleCombatEnd(isWin) {
         if (milestone === 6) gainedPoints += 12;
     }
 
-    // Cộng điểm vào hũ
     gameState.cashoutPoints += gainedPoints;
     if (gainedPoints > 0) {
         alert(`Tộc hệ kích hoạt! Bạn nhận được +${gainedPoints} điểm nổ hũ.`);
     }
 
-    // Tăng vàng cơ bản sau mỗi vòng đấu + tăng số vòng
     gameState.gold += 5; 
     gameState.round += 1;
 
-    // Làm mới cửa hàng cho vòng mới
     generateShop();
     updateGoldUI();
 }
 
-// Hàm xử lý NỔ HŨ nhận thưởng theo mốc điểm Excel của bạn
 function claimCashout() {
     const points = gameState.cashoutPoints;
     if (points === 0) {
@@ -43,7 +36,6 @@ function claimCashout() {
 
     let rewardText = "";
 
-    // Đối chiếu các mốc phần thưởng từ file Excel của bạn
     if (points >= 200) {
         gameState.gold += 100;
         rewardText = "Mốc 200 Điểm Thần Tài: Nhận 100 Vàng và siêu buff trang bị!";
@@ -81,11 +73,10 @@ function claimCashout() {
     }
 
     alert(`🎉 NỔ HŨ THÀNH CÔNG! 🎉\n${rewardText}`);
-    gameState.cashoutPoints = 0; // Reset hũ về 0 sau khi nổ
+    gameState.cashoutPoints = 0; 
     updateGoldUI();
 }
 
-// Khởi chạy game ban đầu
 function initGame() {
     updateGoldUI();
     renderBoard();
@@ -93,7 +84,6 @@ function initGame() {
     generateShop();
     renderTraitsUI();
 
-    // Sự kiện nút Đổi lại (Reroll)
     document.getElementById("reroll-btn").onclick = () => {
         if (gameState.gold >= 2) {
             gameState.gold -= 2;
@@ -104,7 +94,6 @@ function initGame() {
         }
     };
 
-    // Gắn sự kiện cho các nút tính năng mới
     document.getElementById("win-btn").onclick = () => handleCombatEnd(true);
     document.getElementById("lose-btn").onclick = () => handleCombatEnd(false);
     document.getElementById("cashout-btn").onclick = () => claimCashout();
