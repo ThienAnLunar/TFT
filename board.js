@@ -1,5 +1,5 @@
 let draggedElement = null;
-let sourceSlotType = null;
+let sourceSlotType = null; // 'bench' hoặc 'board'
 let sourceIndex = null;
 
 function renderBoard() {
@@ -68,15 +68,20 @@ function setupDragEvents(cell) {
         const targetType = cell.dataset.type;
         const targetIndex = parseInt(cell.dataset.index);
 
+        // Lấy dữ liệu tướng đang di chuyển
         const movingChamp = sourceSlotType === 'bench' ? gameState.benchSlots[sourceIndex] : gameState.boardSlots[sourceIndex];
+        
+        // Lấy dữ liệu tướng tại ô đích
         const targetChamp = targetType === 'bench' ? gameState.benchSlots[targetIndex] : gameState.boardSlots[targetIndex];
 
+        // Hoán đổi vị trí (Swap logic)
         if (sourceSlotType === 'bench') gameState.benchSlots[sourceIndex] = targetChamp;
         else gameState.boardSlots[sourceIndex] = targetChamp;
 
         if (targetType === 'bench') gameState.benchSlots[targetIndex] = movingChamp;
         else gameState.boardSlots[targetIndex] = movingChamp;
 
+        // Vẽ lại giao diện sau khi đổi chỗ
         renderBoard();
         renderBench();
     });

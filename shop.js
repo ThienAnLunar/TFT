@@ -15,12 +15,13 @@ function generateShop() {
 
 function buyChampion(champion, shopItemElement) {
     if (gameState.gold >= champion.cost) {
+        // Tìm ô trống đầu tiên trên hàng chờ
         const emptyIndex = gameState.benchSlots.findIndex(slot => slot === null);
         
         if (emptyIndex !== -1) {
             gameState.gold -= champion.cost;
             gameState.benchSlots[emptyIndex] = { ...champion, star: 1 }; 
-            shopItemElement.style.visibility = "hidden"; 
+            shopItemElement.style.visibility = "hidden"; // Ẩn tướng đã mua
             
             updateGoldUI();
             renderBench();

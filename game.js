@@ -4,6 +4,7 @@ function initGame() {
     renderBench();
     generateShop();
 
+    // Thiết lập hoạt động cho nút Đổi lại (Reroll)
     document.getElementById("reroll-btn").onclick = () => {
         if (gameState.gold >= 2) {
             gameState.gold -= 2;
@@ -15,4 +16,5 @@ function initGame() {
     };
 }
 
+// Chạy game khi toàn bộ trang và mã nguồn được tải xong
 window.onload = initGame;

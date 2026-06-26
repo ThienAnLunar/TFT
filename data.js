@@ -8,8 +8,8 @@ const championsPool = [
 
 const gameState = {
     gold: 50,
-    benchSlots: Array(9).fill(null),
-    boardSlots: Array(28).fill(null),
+    benchSlots: Array(9).fill(null),      // 9 ô hàng chờ
+    boardSlots: Array(28).fill(null),     // 28 ô bàn cờ (4x7)
 };
 
 function updateGoldUI() {
