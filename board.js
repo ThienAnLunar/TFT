@@ -128,16 +128,57 @@ function checkSynergies() {
     renderTraitsUI();
 }
 
+function applyTraitBuffs() {
+    // Duyệt qua toàn bộ các ô trên bàn cờ
+    gameState.boardSlots.forEach((champ, index) => {
+        if (!champ) return;
+
+        // Reset về chỉ số gốc trước khi tính buff mới để tránh bị cộng dồn vô hạn
+        const originalChamp = championsPool.find(c => c.id === champ.id);
+        champ.hp = originalChamp.hp;
+        champ.damage = originalChamp.damage;
+
+        // 1. Buff Đấu Sĩ: Tăng máu [Mốc 2: +200, Mốc 4: +450, Mốc 6: +1200]
+        if (champ.traits.includes("Đấu Sĩ") && gameState.activeTraits["Đấu Sĩ"]) {
+            const milestone = gameState.activeTraits["Đấu Sĩ"].milestone;
+            if (milestone === 2) champ.hp += 200;
+            if (milestone === 4) champ.hp += 450;
+            if (milestone === 6) champ.hp += 1200;
+        }
+
+        // 2. Buff Cuồng Chiến: Tăng sát thương [Mốc 3: +110, Mốc 5: +330]
+        if (champ.traits.includes("Cuồng Chiến") && gameState.activeTraits["Cuồng Chiến"]) {
+            const milestone = gameState.activeTraits["Cuồng Chiến"].milestone;
+            if (milestone === 3) champ.damage += 110;
+            if (milestone === 5) champ.damage += 330;
+        }
+        
+        // Bạn có thể viết thêm các logic cộng chỉ số khác cho Xạ Thủ, Thiên Thần... tại đây
+    });
+}
+
 function renderTraitsUI() {
     const panel = document.getElementById("traits-panel");
     if (!panel) return;
     
     panel.innerHTML = "<h3>Tộc / Hệ Kích Hoạt</h3>";
     
-    // Tạo danh sách chứa toàn bộ 16 tộc hệ để đảm bảo lúc nào cũng hiển thị đầy đủ
+    // 1. Lấy toàn bộ danh sách 16 tộc hệ
     const allTraits = Object.keys(traitsConfig);
     
-    allTraits.forEach(traitName => {
+    // 2. Sắp xếp: Tộc hệ nào được kích mốc (milestone > 0) hoặc có tướng thì xếp lên trước
+    const sortedTraits = allTraits.sort((a, b) => {
+        const dataA = gameState.activeTraits[a] || { milestone: 0, count: 0 };
+        const dataB = gameState.activeTraits[b] || { milestone: 0, count: 0 };
+        
+        if (dataB.milestone !== dataA.milestone) {
+            return dataB.milestone - dataA.milestone; // Ưu tiên mốc cao lên đầu
+        }
+        return dataB.count - dataA.count; // Trùng mốc thì xếp theo số lượng tướng
+    });
+    
+    // 3. Vẽ giao diện ngăn nắp theo thứ tự đã sắp xếp
+    sortedTraits.forEach(traitName => {
         const data = gameState.activeTraits[traitName] || { milestone: 0, count: 0 };
         const traitDiv = document.createElement("div");
         traitDiv.style.marginBottom = "8px";
@@ -149,13 +190,13 @@ function renderTraitsUI() {
         traitDiv.style.alignItems = "center";
         
         if (data.milestone > 0) {
-            // Đạt mốc -> Màu sáng nổi bật (Vàng kim)
+            // Đạt mốc -> Màu sáng nổi bật (Vàng kim) theo thiết kế
             traitDiv.style.background = "linear-gradient(90deg, #ffce00, #e6b800)";
             traitDiv.style.color = "#000";
             traitDiv.style.fontWeight = "bold";
             traitDiv.innerHTML = `<span>⭐ ${traitName}</span> <span>Mốc: ${data.milestone} (${data.count})</span>`;
         } else {
-            // Chưa đạt mốc -> Hiển thị danh sách nền tối, chữ xám mờ theo bảng thiết kế
+            // Chưa đạt mốc -> Hiển thị danh sách nền tối, chữ xám mờ
             traitDiv.style.background = "#222533";
             traitDiv.style.color = "#888";
             traitDiv.innerHTML = `<span>${traitName}</span> <span>${data.count}</span>`;

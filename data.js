@@ -1,4 +1,3 @@
-// Cấu hình toàn bộ 16 Tộc/Hệ và các mốc kích hoạt từ file Excel của bạn
 const traitsConfig = {
     "Đấu Sĩ": { milestones: [2, 4, 6] },
     "Hộ Pháp": { milestones: [2, 4] },
@@ -18,15 +17,12 @@ const traitsConfig = {
     "Thần Tài": { milestones: [3, 5] }
 };
 
-// Mở rộng bể tướng để phủ kín toàn bộ 16 Tộc/Hệ
 const championsPool = [
     { id: "garen", name: "Garen", cost: 1, hp: 600, damage: 50, traits: ["Đấu Sĩ", "Thiên Thần"] },
     { id: "vayne", name: "Vayne", cost: 1, hp: 400, damage: 60, traits: ["Xạ Thủ", "Mã Hóa"] },
     { id: "lucian", name: "Lucian", cost: 2, hp: 450, damage: 55, traits: ["Xạ Thủ", "Thiên Thần"] },
     { id: "ahri", name: "Ahri", cost: 2, hp: 450, damage: 65, traits: ["Mã Hóa", "Ma"] },
     { id: "yasuo", name: "Yasuo", cost: 5, hp: 700, damage: 80, traits: ["Chinh Phục", "Đấu Sĩ"] },
-    
-    // Bổ sung các tướng mới cho đủ Tộc Hệ
     { id: "blitzcrank", name: "Blitzcrank", cost: 1, hp: 650, damage: 45, traits: ["Hộ Pháp", "Hành Tinh"] },
     { id: "kha_zix", name: "Kha'Zix", cost: 1, hp: 500, damage: 65, traits: ["Hư Không", "Sát Thủ"] },
     { id: "tristana", name: "Tristana", cost: 2, hp: 450, damage: 55, traits: ["Yordle", "Xạ Thủ"] },
@@ -42,6 +38,8 @@ const championsPool = [
 
 const gameState = {
     gold: 50,
+    round: 1,
+    cashoutPoints: 0, // Điểm nổ hũ tích lũy
     benchSlots: Array(9).fill(null),
     boardSlots: Array(28).fill(null),
     activeTraits: {} 
@@ -49,4 +47,6 @@ const gameState = {
 
 function updateGoldUI() {
     document.getElementById("gold").innerText = gameState.gold;
+    document.getElementById("round").innerText = gameState.round;
+    document.getElementById("cashout-points").innerText = gameState.cashoutPoints;
 }
