@@ -1,4 +1,4 @@
-import { gameState, updateGoldUI } from 'data.js';
+import { gameState, updateGoldUI } from './data.js';
 import { renderBoard, renderBench } from './board.js';
 import { generateShop } from './shop.js';
 
