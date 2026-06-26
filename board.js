@@ -1,7 +1,3 @@
-let draggedElement = null;
-let sourceSlotType = null; 
-let sourceIndex = null;
-
 function renderBoard() {
     const field = document.getElementById("battlefield");
     if (!field) return;
@@ -15,8 +11,6 @@ function renderBoard() {
         if (gameState.boardSlots[i]) {
             cell.appendChild(createChampPiece(gameState.boardSlots[i], 'board', i));
         }
-
-        setupDragEvents(cell);
         field.appendChild(cell);
     }
 }
@@ -34,8 +28,6 @@ function renderBench() {
         if (gameState.benchSlots[i]) {
             cell.appendChild(createChampPiece(gameState.benchSlots[i], 'bench', i));
         }
-
-        setupDragEvents(cell);
         bench.appendChild(cell);
     }
 }
@@ -43,6 +35,7 @@ function renderBench() {
 function createChampPiece(champData, type, index) {
     const piece = document.createElement("div");
     piece.classList.add("champion-piece");
+    piece.style.cursor = "pointer";
     
     const starIcons = champData.star > 1 ? "⭐".repeat(champData.star) + "<br>" : "";
     piece.innerHTML = `${starIcons}${champData.name}`;
@@ -55,45 +48,52 @@ function createChampPiece(champData, type, index) {
         piece.style.background = "linear-gradient(135deg, #4a5568, #2d3748)";
     }
 
-    piece.draggable = true;
-
-    piece.addEventListener("dragstart", (e) => {
-        draggedElement = piece;
-        sourceSlotType = type;
-        sourceIndex = index;
-        piece.classList.add("dragging");
+    // 1. SỰ KIỆN CLICK ĐƠN: Hiện chỉ số chi tiết
+    piece.addEventListener("click", (e) => {
+        e.stopPropagation(); // Tránh lỗi click chồng chéo
+        showChampInfo(champData);
     });
 
-    piece.addEventListener("dragend", () => {
-        piece.classList.remove("dragging");
+    // 2. SỰ KIỆN DOUBLE CLICK: Di chuyển thông minh không cần kéo thả!
+    piece.addEventListener("dblclick", (e) => {
+        e.stopPropagation();
+        if (type === 'bench') {
+            // Đang ở hàng chờ -> Lên bàn cờ
+            const emptyBoardIndex = gameState.boardSlots.findIndex(slot => slot === null);
+            if (emptyBoardIndex !== -1) {
+                gameState.boardSlots[emptyBoardIndex] = champData;
+                gameState.benchSlots[index] = null;
+            } else {
+                alert("Bàn cờ đã đầy tướng!");
+            }
+        } else {
+            // Đang ở bàn cờ -> Xuống hàng chờ
+            const emptyBenchIndex = gameState.benchSlots.findIndex(slot => slot === null);
+            if (emptyBenchIndex !== -1) {
+                gameState.benchSlots[emptyBenchIndex] = champData;
+                gameState.boardSlots[index] = null;
+            } else {
+                alert("Hàng chờ đã đầy!");
+            }
+        }
+        renderBoard();
+        renderBench();
+        checkSynergies(); // Tự tính lại Tộc/Hệ ngay lập tức!
     });
 
     return piece;
 }
 
-function setupDragEvents(cell) {
-    cell.addEventListener("dragover", (e) => e.preventDefault());
-    cell.addEventListener("dragenter", () => cell.classList.add("over"));
-    cell.addEventListener("dragleave", () => cell.classList.remove("over"));
-
-    cell.addEventListener("drop", (e) => {
-        cell.classList.remove("over");
-        const targetType = cell.dataset.type;
-        const targetIndex = parseInt(cell.dataset.index);
-
-        const movingChamp = sourceSlotType === 'bench' ? gameState.benchSlots[sourceIndex] : gameState.boardSlots[sourceIndex];
-        const targetChamp = targetType === 'bench' ? gameState.benchSlots[targetIndex] : gameState.boardSlots[targetIndex];
-
-        if (sourceSlotType === 'bench') gameState.benchSlots[sourceIndex] = targetChamp;
-        else gameState.boardSlots[sourceIndex] = targetChamp;
-
-        if (targetType === 'bench') gameState.benchSlots[targetIndex] = movingChamp;
-        else gameState.boardSlots[targetIndex] = movingChamp;
-
-        renderBoard();
-        renderBench();
-        checkSynergies(); 
-    });
+// Hàm hiển thị thông tin tướng lên Panel
+function showChampInfo(champ) {
+    const infoPanel = document.getElementById("champ-info-panel");
+    if (!infoPanel) return;
+    infoPanel.innerHTML = `
+        <strong style="color: #ffce00; font-size: 15px;">${champ.name} (${champ.star} Sao)</strong> | 
+        ❤️ Máu: <span style="color: #ff4a4a; font-weight:bold;">${champ.hp}</span> | 
+        ⚔️ Sát thương: <span style="color: #5dade2; font-weight:bold;">${champ.damage}</span> | 
+        🏷️ Tộc Hệ: <span style="color: #2ecc71;">${champ.traits.join(", ")}</span>
+    `;
 }
 
 function checkSynergies() {
@@ -139,8 +139,8 @@ function applyTraitBuffs() {
     gameState.boardSlots.forEach((champ) => {
         if (!champ) return;
         const originalChamp = championsPool.find(c => c.id === champ.id);
-        champ.hp = originalChamp.hp;
-        champ.damage = originalChamp.damage;
+        champ.hp = originalChamp.hp * champ.star; // Tính theo cấp sao gốc
+        champ.damage = originalChamp.damage * champ.star;
 
         if (champ.traits.includes("Đấu Sĩ") && gameState.activeTraits["Đấu Sĩ"]) {
             const milestone = gameState.activeTraits["Đấu Sĩ"].milestone;

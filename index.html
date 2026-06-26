@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TFT</title>
+    <title>Mini TFT Clone</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -20,7 +20,13 @@
         <div style="display: flex; justify-content: center; gap: 20px;">
             <div id="traits-panel"></div>
 
-            <div id="battlefield"></div>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <div id="battlefield"></div>
+                
+                <div id="champ-info-panel" style="background: #141622; padding: 10px; border-radius: 8px; border: 1px solid #3b3e54; min-height: 50px; text-align: center; color: #aaa; font-size: 13px;">
+                    💡 Click vào một tướng để xem chỉ số. Nhấp đúp (Double click) để di chuyển lên/xuống sàn!
+                </div>
+            </div>
         </div>
 
         <div id="bench"></div>
