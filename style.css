@@ -1,13 +1,13 @@
 body {
     background-color: #0f111a;
     color: #fff;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    user-select: none;
+    overflow: hidden; /* Khóa cuộn trang */
 }
 
 #game-container {
@@ -17,59 +17,70 @@ body {
     padding: 15px;
     border-radius: 12px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.6);
-    max-width: 1100px;
-    width: 100%;
+    width: 95vw;
+    max-width: 1150px;
+    height: 90vh;
+    max-height: 650px;
     box-sizing: border-box;
 }
 
 /* Cánh trái: Chỉ số & Hệ tộc */
 #left-panel {
-    width: 250px;
+    width: 240px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    height: 100%;
 }
 
 #player-stats-box {
-    background: #0f111a;
+    background: #0d0e15;
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #2d3041;
 }
 
 #traits-panel {
-    background: #0f111a;
+    background: #0d0e15;
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #2d3041;
     flex-grow: 1;
-    max-height: 420px;
     overflow-y: auto;
 }
 
-/* Cánh phải: Hũ, Sàn 8 hàng, Hàng chờ & Shop */
+#traits-panel h3 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #ff9800;
+    border-bottom: 1px solid #2d3041;
+    padding-bottom: 5px;
+}
+
+/* Cánh phải: Sàn đấu & Shop */
 #right-panel {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     align-items: center;
     flex-grow: 1;
+    height: 100%;
 }
 
 #lucky-chest {
     background: linear-gradient(135deg, #ff9800, #ff5722);
-    padding: 6px 16px;
+    padding: 6px 20px;
     border-radius: 20px;
     font-weight: bold;
     font-size: 13px;
     display: none;
 }
 
-/* Bàn cờ 8 hàng x 7 cột gọn gàng */
+/* Bàn cờ ma trận 8 hàng x 10 cột */
 #battlefield {
     display: grid;
-    grid-template-rows: repeat(8, 48px);
-    grid-template-columns: repeat(7, 48px);
+    grid-template-rows: repeat(8, 42px); /* Ô cờ nhỏ lại để vừa khít khung */
+    grid-template-columns: repeat(10, 42px);
     grid-gap: 3px;
     background: #0d0e15;
     padding: 8px;
@@ -78,10 +89,8 @@ body {
 }
 
 .cell {
-    width: 48px;
-    height: 48px;
-    background-color: #1b1d2a;
-    border: 1px solid #2d3041;
+    width: 42px;
+    height: 42px;
     border-radius: 4px;
     display: flex;
     justify-content: center;
@@ -89,16 +98,16 @@ body {
     box-sizing: border-box;
 }
 
-/* 4 hàng trên - Sân Đối Thủ Kế Tiếp */
+/* Ô cờ địch (4 hàng trên) */
 .cell.enemy-zone {
-    background-color: #291818;
-    border-color: #442222;
+    background-color: #2b1818;
+    border: 1px dashed #4a2222;
 }
 
-/* 4 hàng dưới - Sân Nhà Mình */
+/* Ô cờ ta (4 hàng dưới) */
 .cell.player-zone {
-    background-color: #18221c;
-    border-color: #22442b;
+    background-color: #16241a;
+    border: 1px solid #22422a;
 }
 
 .cell.over {
@@ -109,41 +118,41 @@ body {
 /* Hàng chờ */
 #bench {
     display: grid;
-    grid-template-columns: repeat(9, 48px);
-    grid-gap: 5px;
+    grid-template-columns: repeat(9, 46px);
+    grid-gap: 6px;
 }
 
 .champion-piece {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
     background: #343a57;
     border-radius: 4px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: bold;
     text-align: center;
     cursor: grab;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .champion-piece.dragging { opacity: 0.2; }
 
-/* Cửa hàng tích hợp thẻ Tộc Hệ */
+/* Cửa hàng */
 #shop {
     display: flex;
     gap: 8px;
-    background: #0f111a;
+    background: #0d0e15;
     padding: 8px;
     border-radius: 6px;
     border: 1px solid #2d3041;
+    justify-content: center;
 }
 
 .shop-item {
     width: 110px;
-    height: 65px;
+    height: 70px;
     background: #232936;
     border: 1px solid #3b4254;
     border-radius: 4px;
@@ -155,19 +164,13 @@ body {
     cursor: pointer;
 }
 
-.shop-item:hover {
-    border-color: #ffce00;
-    background: #2b3345;
-}
+.shop-item:hover { border-color: #ffce00; }
 
 .shop-trait-tag {
     font-size: 8px;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.5);
+    color: #00ffcc;
     padding: 1px 3px;
     border-radius: 2px;
-    color: #00adb5;
-    margin-top: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-shadow: 1px 1px 1px #000;
+    border: 1px solid rgba(0, 255, 204, 0.2);
 }

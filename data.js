@@ -55,7 +55,7 @@ const gameState = {
     gold: 50,
     round: 1,
     cashoutPoints: 0,
-    benchSlots: Array(9).fill(null),
-    boardSlots: Array(56).fill(null), // ĐỔI THÀNH 56 Ô CHO 8 HÀNG
+    benchSlots: Array(9).fill(null), // Hàng chờ 9 ô
+    boardSlots: Array(80).fill(null), // ĐỔI THÀNH 80 Ô (8 hàng x 10 cột)
     activeTraits: {} 
 };

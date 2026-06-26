@@ -3,17 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini TFT Clone</title>
+    <title>Mini TFT Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="game-container">
-        
         <div id="left-panel">
             <div id="player-stats-box">
                 <h4 style="margin: 0 0 8px 0; color: #00adb5;">👤 NGƯỜI CHƠI</h4>
                 <div style="font-size: 13px; display: flex; flex-direction: column; gap: 5px;">
-                    <div>❤️ Máu: <span id="player-hp" style="color:#ff4a4a; font-weight:bold;">100</span></div>
                     <div>💰 Vàng: <span id="gold" style="color:#ffd700; font-weight:bold;">50</span></div>
                     <div>⚔️ Vòng đấu: <span id="round">1-1</span></div>
                 </div>
@@ -29,17 +27,13 @@
 
             <div id="bench"></div>
 
-            <div id="control-panel" style="text-align: center;">
+            <div id="control-panel" style="width: 100%;">
                 <div id="shop"></div>
                 <div style="margin-top: 10px; display: flex; gap: 10px; justify-content: center;">
-                    <button id="reroll-btn" style="padding: 8px 15px; background: #ff5722; border:none; color:#fff; font-weight:bold; border-radius:4px; cursor:pointer;">Đổi lại (2G)</button>
-                    <button id="win-btn" style="padding: 8px 15px; background: #4caf50; border:none; color:#fff; font-weight:bold; border-radius:4px; cursor:pointer;">Giả lập THẮNG</button>
-                    <button id="lose-btn" style="padding: 8px 15px; background: #f44336; border:none; color:#fff; font-weight:bold; border-radius:4px; cursor:pointer;">Giả lập THUA</button>
-                    <button id="cashout-btn" style="padding: 8px 15px; background: #ff9800; border:none; color:#fff; font-weight:bold; border-radius:4px; cursor:pointer;">💥 NỔ HŨ</button>
+                    <button id="reroll-btn" onclick="generateShop()" style="padding: 8px 15px; background: #ff5722; border:none; color:#fff; font-weight:bold; border-radius:4px; cursor:pointer;">Đổi lại (2G)</button>
                 </div>
             </div>
         </div>
-
     </div>
 
     <script src="data.js"></script>
