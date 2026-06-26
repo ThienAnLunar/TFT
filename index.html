@@ -3,26 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini TFT Clone</title>
+    <title>TFT</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div id="game-container">
+        <div id="status-bar" style="display: flex; justify-content: space-around; background: #141622; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-weight: bold;">
+            <div>⚔️ Vòng: <span id="round">1</span></div>
+            <div>💰 Vàng: <span id="gold">50</span></div>
+            <div>📦 Điểm Hũ: <span id="cashout-points" style="color: #ff9800;">0</span></div>
+        </div>
+
         <h1>Mini TFT Clone</h1>
         
-        <div id="battlefield"></div>
+        <div style="display: flex; justify-content: center; gap: 20px;">
+            <div id="traits-panel"></div>
+
+            <div id="battlefield"></div>
+        </div>
 
         <div id="bench"></div>
 
         <div id="control-panel">
-            <div id="player-stats">
-                <p>💰 Vàng: <span id="gold">50</span></p>
-            </div>
-            
-            <div id="shop-container">
-                <div id="shop"></div>
+            <div id="shop"></div>
+            <div style="display: flex; justify-content: center; gap: 10px; margin-top: 15px;">
                 <button id="reroll-btn">Đổi lại (2 Vàng)</button>
+                <button id="win-btn" style="padding: 10px 20px; background-color: #4caf50; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">Giả lập THẮNG TRẬN</button>
+                <button id="lose-btn" style="padding: 10px 20px; background-color: #f44336; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">Giả lập THUA TRẬN</button>
+                <button id="cashout-btn" style="padding: 10px 20px; background-color: #ff9800; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">💥 NỔ HŨ 💥</button>
             </div>
         </div>
     </div>
