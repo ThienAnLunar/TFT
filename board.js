@@ -86,3 +86,89 @@ function setupDragEvents(cell) {
         renderBench();
     });
 }
+
+function checkSynergies() {
+    const uniqueChampsOnBoard = new Set();
+    const traitCounts = {};
+
+    // 1. Chỉ lọc tướng duy nhất trên bàn cờ (Trùng ID không tính thêm mốc)
+    gameState.boardSlots.forEach(champ => {
+        if (champ) {
+            uniqueChampsOnBoard.add(champ.id);
+        }
+    });
+
+    // 2. Đếm số lượng theo Tộc Hệ
+    uniqueChampsOnBoard.forEach(champId => {
+        const champData = championsPool.find(c => c.id === champId);
+        if (champData && champData.traits) {
+            champData.traits.forEach(trait => {
+                traitCounts[trait] = (traitCounts[trait] || 0) + 1;
+            });
+        }
+    });
+
+    // 3. Tính toán mốc kích hoạt dựa trên cấu hình 16 tộc hệ
+    const finalActiveTraits = {};
+    for (const [traitName, count] of Object.entries(traitCounts)) {
+        const config = traitsConfig[traitName];
+        if (config) {
+            const activatedMilestone = config.milestones
+                .filter(m => count >= m)
+                .pop(); // Lấy mốc lớn nhất đạt được
+            
+            finalActiveTraits[traitName] = {
+                count: count,
+                milestone: activatedMilestone || 0
+            };
+        }
+    }
+
+    gameState.activeTraits = finalActiveTraits;
+    renderTraitsUI();
+}
+
+function renderTraitsUI() {
+    const panel = document.getElementById("traits-panel");
+    if (!panel) return;
+    
+    panel.innerHTML = "<h3>Tộc / Hệ Kích Hoạt</h3>";
+    
+    // Sắp xếp: Tộc hệ kích hoạt được mốc lên đầu, sau đó sắp xếp theo số lượng tướng giảm dần
+    const sortedTraits = Object.entries(gameState.activeTraits).sort((a, b) => {
+        if (b[1].milestone !== a[1].milestone) {
+            return b[1].milestone - a[1].milestone;
+        }
+        return b[1].count - a[1].count;
+    });
+    
+    if (sortedTraits.length === 0) {
+        panel.innerHTML += "<p style='color:#666; font-size:12px; text-align:center;'>Chưa có tướng trên bàn cờ</p>";
+        return;
+    }
+
+    sortedTraits.forEach(([traitName, data]) => {
+        const traitDiv = document.createElement("div");
+        traitDiv.style.marginBottom = "8px";
+        traitDiv.style.padding = "6px 10px";
+        traitDiv.style.borderRadius = "5px";
+        traitDiv.style.fontSize = "12px";
+        traitDiv.style.display = "flex";
+        traitDiv.style.justifyContent = "space-between";
+        traitDiv.style.alignItems = "center";
+        
+        if (data.milestone > 0) {
+            // Đạt mốc -> Màu sáng nổi bật (Vàng kim)
+            traitDiv.style.background = "linear-gradient(90deg, #ffce00, #e6b800)";
+            traitDiv.style.color = "#000";
+            traitDiv.style.fontWeight = "bold";
+            traitDiv.innerHTML = `<span>⭐ ${traitName}</span> <span>Mốc: ${data.milestone} (${data.count})</span>`;
+        } else {
+            // Chưa đạt mốc -> Màu tối ẩn đi bớt
+            traitDiv.style.background = "#222533";
+            traitDiv.style.color = "#888";
+            traitDiv.innerHTML = `<span>${traitName}</span> <span>${data.count}</span>`;
+        }
+        panel.appendChild(traitDiv);
+    });
+}

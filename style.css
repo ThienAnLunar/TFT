@@ -127,3 +127,23 @@ body {
 #reroll-btn:hover {
     background-color: #ff7043;
 }
+
+#traits-panel {
+    width: 200px;
+    max-height: 400px;
+    overflow-y: auto; /* Tự động xuất hiện thanh cuộn nếu danh sách quá dài */
+    background: #141622;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #3b3e54;
+    text-align: left;
+}
+
+/* Tùy chỉnh thanh cuộn cho đẹp */
+#traits-panel::-webkit-scrollbar {
+    width: 4px;
+}
+#traits-panel::-webkit-scrollbar-thumb {
+    background: #3b3e54;
+    border-radius: 4px;
+}
