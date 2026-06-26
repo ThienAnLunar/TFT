@@ -134,20 +134,11 @@ function renderTraitsUI() {
     
     panel.innerHTML = "<h3>Tộc / Hệ Kích Hoạt</h3>";
     
-    // Sắp xếp: Tộc hệ kích hoạt được mốc lên đầu, sau đó sắp xếp theo số lượng tướng giảm dần
-    const sortedTraits = Object.entries(gameState.activeTraits).sort((a, b) => {
-        if (b[1].milestone !== a[1].milestone) {
-            return b[1].milestone - a[1].milestone;
-        }
-        return b[1].count - a[1].count;
-    });
+    // Tạo danh sách chứa toàn bộ 16 tộc hệ để đảm bảo lúc nào cũng hiển thị đầy đủ
+    const allTraits = Object.keys(traitsConfig);
     
-    if (sortedTraits.length === 0) {
-        panel.innerHTML += "<p style='color:#666; font-size:12px; text-align:center;'>Chưa có tướng trên bàn cờ</p>";
-        return;
-    }
-
-    sortedTraits.forEach(([traitName, data]) => {
+    allTraits.forEach(traitName => {
+        const data = gameState.activeTraits[traitName] || { milestone: 0, count: 0 };
         const traitDiv = document.createElement("div");
         traitDiv.style.marginBottom = "8px";
         traitDiv.style.padding = "6px 10px";
@@ -164,7 +155,7 @@ function renderTraitsUI() {
             traitDiv.style.fontWeight = "bold";
             traitDiv.innerHTML = `<span>⭐ ${traitName}</span> <span>Mốc: ${data.milestone} (${data.count})</span>`;
         } else {
-            // Chưa đạt mốc -> Màu tối ẩn đi bớt
+            // Chưa đạt mốc -> Hiển thị danh sách nền tối, chữ xám mờ theo bảng thiết kế
             traitDiv.style.background = "#222533";
             traitDiv.style.color = "#888";
             traitDiv.innerHTML = `<span>${traitName}</span> <span>${data.count}</span>`;

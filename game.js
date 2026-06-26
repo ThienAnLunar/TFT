@@ -3,6 +3,7 @@ function initGame() {
     renderBoard();
     renderBench();
     generateShop();
+    renderTraitsUI();
 
     // Thiết lập hoạt động cho nút Đổi lại (Reroll)
     document.getElementById("reroll-btn").onclick = () => {
