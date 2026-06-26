@@ -7,7 +7,15 @@ function generateShop() {
         const randChamp = championsPool[Math.floor(Math.random() * championsPool.length)];
         const shopItem = document.createElement("div");
         shopItem.classList.add("shop-item");
-        shopItem.innerHTML = `<div>${randChamp.name}</div><div style="color:#ffd700">${randChamp.cost}G</div>`;
+        
+        // ĐIỀU CHỈNH: Đọc thuộc tính .traits và sinh các nhãn nhỏ (tags) hiển thị ngay dưới tên tướng
+        const traitTags = randChamp.traits.map(t => `<span class="shop-trait-tag">${t}</span>`).join(" ");
+        
+        shopItem.innerHTML = `
+            <div style="font-size: 11px; font-weight: bold; color: #fff;">${randChamp.name}</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 2px;">${traitTags}</div>
+            <div style="color:#ffd700; font-size: 11px; text-align: right; width: 100%; font-weight: bold;">${randChamp.cost}G</div>
+        `;
         
         shopItem.onclick = () => buyChampion(randChamp, shopItem);
         shop.appendChild(shopItem);

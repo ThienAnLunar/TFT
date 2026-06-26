@@ -7,16 +7,18 @@ function renderBoard() {
     if (!field) return;
     field.innerHTML = "";
     
-    // 56 ô ứng với 8 hàng x 7 cột
+    // 56 ô cờ ứng với 8 hàng x 7 cột
     for (let i = 0; i < 56; i++) {
         const cell = document.createElement("div");
         cell.classList.add("cell");
         cell.dataset.index = i;
         cell.dataset.type = "board";
 
-        // 4 hàng đầu (ô 0 đến 27) là sân đối thủ
+        // Phân tách thị giác rõ ràng: 4 hàng trên của Địch, 4 hàng dưới của Ta
         if (i < 28) {
             cell.classList.add("enemy-zone");
+        } else {
+            cell.classList.add("player-zone");
         }
 
         if (gameState.boardSlots[i]) {
@@ -76,15 +78,13 @@ function setupDragEvents(cell) {
         const targetType = cell.dataset.type;
         const targetIndex = parseInt(cell.dataset.index);
 
-        // LUẬT MỚI: Tướng trên sàn đấu KHÔNG THỂ kéo thả ngược về hàng chờ
         if (sourceSlotType === 'board' && targetType === 'bench') {
-            alert("Không thể kéo tướng từ bàn cờ về hàng chờ! Hãy dùng cơ chế khác.");
+            alert("Không thể kéo tướng từ bàn cờ về hàng chờ!");
             return;
         }
 
-        // LUẬT MỚI: Bạn không thể đặt tướng vào vùng đối thủ (4 hàng trên: 0-27)
         if (targetType === 'board' && targetIndex < 28) {
-            alert("Đây là khu vực của đối thủ! Hãy đặt ở 4 hàng dưới.");
+            alert("Đây là khu vực bố trận của ĐỐI THỦ TIẾP THEO! Hãy đặt ở 4 hàng dưới.");
             return;
         }
 
@@ -121,7 +121,7 @@ function checkSynergies() {
     });
 
     const finalActiveTraits = {};
-    let hasBoxTrait = false; // Check xem có kích mốc Mã Hóa/Chinh Phục để hiện hũ không
+    let hasBoxTrait = false;
 
     for (const [traitName, count] of Object.entries(traitCounts)) {
         const config = traitsConfig[traitName];
@@ -133,7 +133,6 @@ function checkSynergies() {
                 milestone: activatedMilestone || 0
             };
 
-            // Nếu kích hoạt mốc của Mã Hóa hoặc Chinh Phục thì bật cờ báo hiện hũ nổ
             if ((traitName === "Mã Hóa" || traitName === "Chinh Phục") && activatedMilestone > 0) {
                 hasBoxTrait = true;
             }
@@ -142,7 +141,6 @@ function checkSynergies() {
 
     gameState.activeTraits = finalActiveTraits;
     
-    // Ẩn hiện hộp nổ hũ dựa theo tộc hệ được kích hoạt mốc
     const chest = document.getElementById("lucky-chest");
     if (chest) chest.style.display = hasBoxTrait ? "block" : "none";
 
@@ -155,42 +153,43 @@ function renderTraitsUI() {
     
     panel.innerHTML = "<h3>Tộc / Hệ Kích Hoạt</h3>";
     
-    // LUẬT MỚI: Chỉ lấy các Tộc/Hệ có số tướng từ 1 trở lên
+    // ĐIỀU CHỈNH: Chỉ hiển thị tộc hệ có số lượng từ 1 trở lên (Ẩn sạch các hệ có số lượng bằng 0)
     const activeEntries = Object.entries(gameState.activeTraits).filter(([_, data]) => data.count >= 1);
     
     if (activeEntries.length === 0) {
-        panel.innerHTML += "<p style='color:#666; font-size:12px; text-align:center;'>Chưa kích hoạt hệ</p>";
+        panel.innerHTML += "<p style='color:#666; font-size:11px; text-align:center; margin-top:20px;'>Chưa có tướng trên sàn</p>";
         return;
     }
 
-    // Sắp xếp tộc hệ theo mốc cao lên đầu
+    // Sắp xếp ưu tiên mốc lên đầu
     activeEntries.sort((a, b) => b[1].milestone - a[1].milestone);
     
     activeEntries.forEach(([traitName, data]) => {
         const traitDiv = document.createElement("div");
-        traitDiv.style.marginBottom = "8px";
-        traitDiv.style.padding = "8px";
-        traitDiv.style.borderRadius = "5px";
+        traitDiv.style.marginBottom = "6px";
+        traitDiv.style.padding = "6px 8px";
+        traitDiv.style.borderRadius = "4px";
         traitDiv.style.fontSize = "12px";
         traitDiv.style.display = "flex";
         traitDiv.style.justifyContent = "space-between";
-        traitDiv.style.cursor = "pointer"; // Biến thành nút bấm được
+        traitDiv.style.alignItems = "center";
+        traitDiv.style.cursor = "pointer";
         
         if (data.milestone > 0) {
-            traitDiv.style.background = "linear-gradient(90deg, #ffce00, #e6b800)";
-            traitDiv.style.color = "#000";
+            traitDiv.style.background = "linear-gradient(90deg, #ff9800, #e67e22)";
+            traitDiv.style.color = "#fff";
             traitDiv.style.fontWeight = "bold";
             traitDiv.innerHTML = `<span>⭐ ${traitName}</span> <span>Mốc: ${data.milestone} (${data.count})</span>`;
         } else {
-            traitDiv.style.background = "#222533";
-            traitDiv.style.color = "#aaa";
+            traitDiv.style.background = "#1b1d2a";
+            traitDiv.style.color = "#ccc";
             traitDiv.innerHTML = `<span>${traitName}</span> <span>(${data.count})</span>`;
         }
 
-        // LUẬT MỚI: Ấn vào tộc hệ sẽ hiện thông báo chi tiết thông tin mốc kích hoạt
+        // Click xem chi tiết mô tả tính năng từ file thiết kế Excel
         traitDiv.onclick = () => {
             const config = traitsConfig[traitName];
-            alert(`ℹ️ THÔNG TIN TỘC HỆ: ${traitName}\n- Số lượng tướng hiện tại: ${data.count}\n- Các mốc kích hoạt yêu cầu: ${config.milestones.join(", ")} tướng.`);
+            alert(`ℹ️ CHI TIẾT TỘC HỆ: ${traitName}\n- Số lượng hiện tại trên sàn: ${data.count} tướng.\n- Các mốc kích hoạt: ${config.milestones.join("/")} tướng.`);
         };
 
         panel.appendChild(traitDiv);

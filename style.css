@@ -1,121 +1,122 @@
 body {
     background-color: #0f111a;
     color: #fff;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
     user-select: none;
 }
 
 #game-container {
     display: flex;
-    gap: 20px;
-    background: #1a1c28;
-    padding: 20px;
+    gap: 15px;
+    background: #161824;
+    padding: 15px;
     border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-    max-width: 1000px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    max-width: 1100px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* Cánh trái: Chỉ số & Tộc hệ */
+/* Cánh trái: Chỉ số & Hệ tộc */
 #left-panel {
-    width: 240px;
+    width: 250px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
 }
 
 #player-stats-box {
-    background: #141622;
-    padding: 12px;
+    background: #0f111a;
+    padding: 10px;
     border-radius: 8px;
-    border: 1px solid #3b3e54;
+    border: 1px solid #2d3041;
 }
 
 #traits-panel {
-    background: #141622;
-    padding: 12px;
+    background: #0f111a;
+    padding: 10px;
     border-radius: 8px;
-    border: 1px solid #3b3e54;
-    max-height: 400px;
+    border: 1px solid #2d3041;
+    flex-grow: 1;
+    max-height: 420px;
     overflow-y: auto;
 }
 
-#traits-panel h3 {
-    margin: 0 0 10px 0;
-    font-size: 14px;
-    color: #ff5722;
-    border-bottom: 1px solid #3b3e54;
-    padding-bottom: 5px;
-}
-
-/* Cánh phải: Sàn đấu & Shop */
+/* Cánh phải: Hũ, Sàn 8 hàng, Hàng chờ & Shop */
 #right-panel {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
     align-items: center;
+    flex-grow: 1;
 }
 
-/* Hũ Thần Tài hiện trên bàn cờ */
 #lucky-chest {
     background: linear-gradient(135deg, #ff9800, #ff5722);
-    padding: 8px 20px;
+    padding: 6px 16px;
     border-radius: 20px;
     font-weight: bold;
-    display: none; /* Mặc định ẩn, kích hoạt hệ mới hiện */
-    box-shadow: 0 0 10px rgba(255,152,0,0.5);
+    font-size: 13px;
+    display: none;
 }
 
-/* Bàn cờ 8 hàng x 7 cột */
+/* Bàn cờ 8 hàng x 7 cột gọn gàng */
 #battlefield {
     display: grid;
-    grid-template-rows: repeat(8, 55px);
-    grid-template-columns: repeat(7, 55px);
-    grid-gap: 4px;
-    background: #10121b;
-    padding: 10px;
+    grid-template-rows: repeat(8, 48px);
+    grid-template-columns: repeat(7, 48px);
+    grid-gap: 3px;
+    background: #0d0e15;
+    padding: 8px;
     border-radius: 8px;
-    border: 2px solid #2d3041;
+    border: 2px solid #252836;
 }
 
-/* Các ô cờ */
 .cell {
-    width: 55px;
-    height: 55px;
-    background-color: #222533;
-    border: 1px solid #3b3e54;
-    border-radius: 6px;
+    width: 48px;
+    height: 48px;
+    background-color: #1b1d2a;
+    border: 1px solid #2d3041;
+    border-radius: 4px;
     display: flex;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
 }
 
-/* 4 hàng trên của đối thủ */
+/* 4 hàng trên - Sân Đối Thủ Kế Tiếp */
 .cell.enemy-zone {
-    background-color: #2a1b1b;
-    border-color: #522d2d;
+    background-color: #291818;
+    border-color: #442222;
+}
+
+/* 4 hàng dưới - Sân Nhà Mình */
+.cell.player-zone {
+    background-color: #18221c;
+    border-color: #22442b;
 }
 
 .cell.over {
     border-color: #ffce00;
-    background-color: #2d324d;
+    background-color: #232946;
 }
 
 /* Hàng chờ */
 #bench {
     display: grid;
-    grid-template-columns: repeat(9, 55px);
-    grid-gap: 6px;
+    grid-template-columns: repeat(9, 48px);
+    grid-gap: 5px;
 }
 
 .champion-piece {
-    width: 48px;
-    height: 48px;
-    background: #3e4465;
+    width: 42px;
+    height: 42px;
+    background: #343a57;
     border-radius: 4px;
     display: flex;
     flex-direction: column;
@@ -123,26 +124,50 @@ body {
     align-items: center;
     font-size: 10px;
     font-weight: bold;
+    text-align: center;
     cursor: grab;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
-.champion-piece.dragging { opacity: 0.3; }
+.champion-piece.dragging { opacity: 0.2; }
 
+/* Cửa hàng tích hợp thẻ Tộc Hệ */
 #shop {
     display: flex;
-    gap: 10px;
+    gap: 8px;
+    background: #0f111a;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #2d3041;
 }
 
 .shop-item {
-    width: 100px;
-    height: 60px;
-    background: #2e3d52;
+    width: 110px;
+    height: 65px;
+    background: #232936;
+    border: 1px solid #3b4254;
     border-radius: 4px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-between;
+    padding: 6px;
+    box-sizing: border-box;
     cursor: pointer;
-    font-size: 11px;
-    font-weight: bold;
+}
+
+.shop-item:hover {
+    border-color: #ffce00;
+    background: #2b3345;
+}
+
+.shop-trait-tag {
+    font-size: 8px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 1px 3px;
+    border-radius: 2px;
+    color: #00adb5;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-shadow: 1px 1px 1px #000;
 }
