@@ -50,12 +50,3 @@ function updateGoldUI() {
     document.getElementById("round").innerText = gameState.round;
     document.getElementById("cashout-points").innerText = gameState.cashoutPoints;
 }
-
-const gameState = {
-    gold: 50,
-    round: 1,
-    cashoutPoints: 0,
-    benchSlots: Array(9).fill(null), // Hàng chờ 9 ô
-    boardSlots: Array(80).fill(null), // ĐỔI THÀNH 80 Ô (8 hàng x 10 cột)
-    activeTraits: {} 
-};
